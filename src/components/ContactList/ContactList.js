@@ -1,24 +1,24 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { deleteContact } from "../../redux/contacts/contacts-operations";
-import {
-  getContacts,
-  getFilter,
-} from "../../redux/contacts/contacts-selectors";
+import { contactsOperations, contactsSelectors } from "redux/contacts";
 import ContactItem from "./ContactItem";
 import s from "./ContactList.module.css";
 
 export default function ContactList() {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
-
-  const filteredContacts = contacts.filter(({ name }) => {
-    return name.toLowerCase().includes(filter.toLowerCase());
-  });
-
   const dispatch = useDispatch();
-  const onDeleteContact = (id) => dispatch(deleteContact(id));
+  const onDeleteContact = (id) =>
+    dispatch(contactsOperations.deleteContact(id));
+
+  useEffect(() => dispatch(contactsOperations.fetchContacts()), [dispatch]);
+
+  const contacts = useSelector(contactsSelectors.getContacts);
+  const filter = useSelector(contactsSelectors.getFilter);
+
+  const filteredContacts = contacts.filter((contact) => {
+    return contact.name.toLowerCase().includes(filter.toLowerCase());
+  });
 
   if (filteredContacts.length === 0) return null;
 
