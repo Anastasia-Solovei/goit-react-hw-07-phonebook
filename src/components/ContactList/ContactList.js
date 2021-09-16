@@ -13,12 +13,7 @@ export default function ContactList() {
 
   useEffect(() => dispatch(contactsOperations.fetchContacts()), [dispatch]);
 
-  const contacts = useSelector(contactsSelectors.getContacts);
-  const filter = useSelector(contactsSelectors.getFilter);
-
-  const filteredContacts = contacts.filter((contact) => {
-    return contact.name.toLowerCase().includes(filter.toLowerCase());
-  });
+  const filteredContacts = useSelector(contactsSelectors.getFilteredContacts);
 
   if (filteredContacts.length === 0) return null;
 
