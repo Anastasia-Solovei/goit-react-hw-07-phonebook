@@ -5,9 +5,13 @@ axios.defaults.baseURL = "http://localhost:4040";
 
 export const fetchContacts = createAsyncThunk(
   "contactList/fetchContacts",
-  async () => {
-    const contacts = await axios.get("/contacts");
-    return contacts.data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const contacts = await axios.get("/contacts");
+      return contacts.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 );
 
