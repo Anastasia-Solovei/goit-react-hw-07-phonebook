@@ -2,15 +2,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 
-import { changeFilter } from "../../redux/contacts/contacts-actions";
-import { getFilter } from "../../redux/contacts/contacts-selectors";
+import { contactsActions, contactsSelectors } from "redux/contacts";
 import s from "./Filter.module.css";
 
 export default function Filter() {
   const filterInputId = uuidv4();
 
-  const filterValue = useSelector(getFilter);
-  const dispatch = useDispatch(changeFilter);
+  const filterValue = useSelector(contactsSelectors.getFilter);
+  const dispatch = useDispatch();
+  const onChangeFilter = (e) =>
+    dispatch(contactsActions.changeFilter(e.target.value));
 
   return (
     <div className={s.InputOverlay}>
@@ -22,7 +23,7 @@ export default function Filter() {
         type="text"
         name="filter"
         value={filterValue}
-        onChange={(e) => dispatch(changeFilter(e.target.value))}
+        onChange={onChangeFilter}
         id={filterInputId}
       ></input>
     </div>

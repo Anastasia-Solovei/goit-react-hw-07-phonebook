@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 
-import { getContacts } from "../../redux/contacts/contacts-selectors";
-import { addContact } from "../../redux/contacts/contacts-operations";
+import { contactsOperations, contactsSelectors } from "redux/contacts";
 import s from "./ContactForm.module.css";
 
 export default function ContactForm() {
@@ -13,7 +12,7 @@ export default function ContactForm() {
   const nameInputId = uuidv4();
   const numberInputId = uuidv4();
 
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(contactsSelectors.getContacts);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -53,7 +52,7 @@ export default function ContactForm() {
 
     uniqueContact &&
       dispatch(
-        addContact({
+        contactsOperations.addContact({
           id: uuidv4(),
           name: name,
           number: number,
